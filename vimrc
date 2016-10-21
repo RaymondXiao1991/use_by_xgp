@@ -30,36 +30,36 @@ endif
 " -----------------------------------------------------------------------------
 "  < Windows Gvim 默认配置> 做了一点修改
 " -----------------------------------------------------------------------------
-if (g:iswindows && g:isGUI)
-    source $VIMRUNTIME/vimrc_example.vim
-    source $VIMRUNTIME/mswin.vim
-    behave mswin
-    set diffexpr=MyDiff()
- 
-    function MyDiff()
-        let opt = '-a --binary '
-        if &diffopt =~ 'icase' | let opt = opt . '-i ' | endif
-        if &diffopt =~ 'iwhite' | let opt = opt . '-b ' | endif
-        let arg1 = v:fname_in
-        if arg1 =~ ' ' | let arg1 = '"' . arg1 . '"' | endif
-        let arg2 = v:fname_new
-        if arg2 =~ ' ' | let arg2 = '"' . arg2 . '"' | endif
-        let arg3 = v:fname_out
-        if arg3 =~ ' ' | let arg3 = '"' . arg3 . '"' | endif
-        let eq = ''
-        if $VIMRUNTIME =~ ' '
-            if &sh =~ '\<cmd'
-                let cmd = '""' . $VIMRUNTIME . '\diff"'
-                let eq = '"'
-            else
-                let cmd = substitute($VIMRUNTIME, ' ', '" ', '') . '\diff"'
-            endif
-        else
-            let cmd = $VIMRUNTIME . '\diff'
-        endif
-        silent execute '!' . cmd . ' ' . opt . arg1 . ' ' . arg2 . ' > ' . arg3 . eq
-    endfunction
-endif
+" if (g:iswindows && g:isGUI)
+    " source $VIMRUNTIME/vimrc_example.vim
+    " source $VIMRUNTIME/mswin.vim
+    " behave mswin
+    " set diffexpr=MyDiff()
+  
+    " function MyDiff()
+        " let opt = '-a --binary '
+        " if &diffopt =~ 'icase' | let opt = opt . '-i ' | endif
+        " if &diffopt =~ 'iwhite' | let opt = opt . '-b ' | endif
+        " let arg1 = v:fname_in
+        " if arg1 =~ ' ' | let arg1 = '"' . arg1 . '"' | endif
+        " let arg2 = v:fname_new
+        " if arg2 =~ ' ' | let arg2 = '"' . arg2 . '"' | endif
+        " let arg3 = v:fname_out
+        " if arg3 =~ ' ' | let arg3 = '"' . arg3 . '"' | endif
+        " let eq = ''
+        " if $VIMRUNTIME =~ ' '
+            " if &sh =~ '\<cmd'
+                " let cmd = '""' . $VIMRUNTIME . '\diff"'
+                " let eq = '"'
+            " else
+                " let cmd = substitute($VIMRUNTIME, ' ', '" ', '') . '\diff"'
+            " endif
+        " else
+            " let cmd = $VIMRUNTIME . '\diff'
+        " endif
+        " silent execute '!' . cmd . ' ' . opt . arg1 . ' ' . arg2 . ' > ' . arg3 . eq
+    " endfunction
+" endif
  
 " -----------------------------------------------------------------------------
 "  < Linux Gvim/Vim 默认配置> 做了一点修改
@@ -121,8 +121,8 @@ if g:islinux
     set rtp+=~/.vim/bundle/vundle/
     call vundle#rc()
 else
-    set rtp+=$VIM\vim74\\bundle\vundle
-    call vundle#rc('$VIM\vim74\bundle')
+    set rtp+=$VIM\bundle\vundle
+    call vundle#rc('$VIM\bundle')
 endif
  
 " 使用Vundle来管理插件，这个必须要有。
@@ -276,7 +276,8 @@ set laststatus=2                                      "启用状态栏信息
 set cmdheight=2                                       "设置命令行的高度为2，默认为1
 set cursorline                                        "突出显示当前行
 "set guifont=YaHei_Consolas_Hybrid:h10                 "设置字体:字号（字体名称空格用下划线代替）
-set guifont=Courier_New:h11:cANSI
+"set guifont=Courier_New:h12:cANSI
+set guifont=Monaco:h12
 set nowrap                                            "设置不自动换行
 set shortmess=atI                                     "去掉欢迎界面
 set wrap                                              "设置自动折行
@@ -322,13 +323,13 @@ endif
 " -----------------------------------------------------------------------------
 "  < 编译、连接、运行配置 (目前只配置了C、C++、Java语言)>
 " -----------------------------------------------------------------------------
-" F9 一键保存、编译、连接存并运行
-nmap <F9> :call Run()<CR>
-imap <F9> <ESC>:call Run()<CR>
+" F5 一键保存、编译、连接存并运行
+nmap <F5> :call Run()<CR>
+imap <F5> <ESC>:call Run()<CR>
  
-" Ctrl + F9 一键保存并编译
-nmap <c-F9> :call Compile()<CR>
-imap <c-F9> <ESC>:call Compile()<CR>
+" Ctrl + F5 一键保存并编译
+nmap <c-F5> :call Compile()<CR>
+imap <c-F5> <ESC>:call Compile()<CR>
  
 " Ctrl + F10 一键保存并连接
 nmap <c-F10> :call Link()<CR>
@@ -499,7 +500,6 @@ func! Link()
         setlocal makeprg=make
     elseif expand("%:e") == "java"
         return
-    endif
     elseif expand("%:e") == "python" || expand("%:e") == "py"
         return
     endif
@@ -573,11 +573,11 @@ func! Run()
     endif
 endfunc
 
-"autocmd BufRead *.py set makeprg=python\ -c\ \"import\ py_compile,sys;\ sys.stderr=sys.stdout;\ py_compile.compile(r'%')\"  
-"autocmd BufRead *.py set efm=%C\ %.%#,%A\ \ File\ \"%f\"\\,\ line\ %l%.%#,%Z%[%^\ ]%\\@=%m  
-"autocmd BufRead *.py nmap <F9> :w !python %<CR>
-"autocmd BufRead *.py nmap <F10> :make<CR>  
-"autocmd BufRead *.py copen "如果是py文件，则同时打开编译信息窗口
+autocmd BufRead *.py set makeprg=python\ -c\ \"import\ py_compile,sys;\ sys.stderr=sys.stdout;\ py_compile.compile(r'%')\"  
+autocmd BufRead *.py set efm=%C\ %.%#,%A\ \ File\ \"%f\"\\,\ line\ %l%.%#,%Z%[%^\ ]%\\@=%m  
+autocmd BufRead *.py nmap <F9> :w !python %<CR>
+autocmd BufRead *.py nmap <F10> :make<CR>  
+autocmd BufRead *.py copen "如果是py文件，则同时打开编译信息窗口
 func! RunPython()
     if g:iswindows
         if expand("%:e") == "python" || expand("%:e") == "py"
@@ -1186,4 +1186,4 @@ set hlsearch
 
 "27.python代码补全
 filetype plugin on	"表示开启插件 
-let g:pydiction_location = '$VIM/vim74/bundle/pydiction/complete-dict'	"写入你存放complete-dict的绝对路径
+let g:pydiction_location = '$VIM/bundle/pydiction/complete-dict'	"写入你存放complete-dict的绝对路径
